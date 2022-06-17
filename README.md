@@ -45,6 +45,7 @@ demonstration purposes, I've included all the pieces in a comprehensive example 
 ```typescript
 // server.ts
 import { HealthCheck, Status } from '@byu-oit/healthcheck'
+import { healthCheckFastify } from '@byu-oit/healthcheck/dist/plugins/fastify'
 import { FastifyRequest } from 'fastify'
 import { Client } from 'pg'
 
@@ -59,7 +60,7 @@ const healthCheck = new HealthCheck({ version: '1', releaseId: '1.2.2' })
     }
   })
 
-void api.register(fastifyRfcHealthCheck, {
+void api.register(healthCheckFastify, {
   logLevel: 'error', // Disable health check logging except for errors
   path: '/health',
   // method: 'GET', // Default method is GET
@@ -103,3 +104,19 @@ const healthCheck = new HealthCheck({
   }
 })
 ```
+
+### Plugins
+
+Plugins or middleware are implementations of the RFC Draft for specific web server frameworks such as fastify. Plugins
+must be imported directly to not bloat the required dependencies to run this package. Additionally, all plugin
+dependencies must be installed.
+
+### Executor Factories
+
+Executor Factories assist in replicating common patterns for checking system statuses. like plugins, must be imported
+directly and require all their dependencies (if any) to be installed.
+
+| Executor             | Import Path                               | Dependencies               | Description                                                                                                                                                                                  |
+|----------------------|-------------------------------------------|----------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| noopExecutorFactory  | @byu-oit/healthcheck/dist/executors/noop  | None                       | An executor for testing purposes.                                                                                                                                                            |
+| fetchExecutorFactory | @byu-oit/healthcheck/dist/executors/fetch | `npm install node-fetch@2` | Pass in node-fetch configurations to make HTTP requests. Status Codes 2xx and 3xx will set a status of 'pass' in the health check. Any other status codes will result in a status of 'fail'. |
