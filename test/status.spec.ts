@@ -1,4 +1,4 @@
-import * as Status from '../src/status'
+import { Status } from '../src'
 
 describe('convert status text to number', () => {
   test.concurrent.each([

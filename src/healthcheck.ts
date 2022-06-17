@@ -1,56 +1,7 @@
-import { Static, Type } from '@sinclair/typebox'
 import { Check, CheckOptions } from './check'
 import { Executor } from './executors'
 import * as Status from './status'
-
-
-export const TComponent = Type.Object({
-  componentId: Type.Optional(Type.String()),
-  componentType: Type.Optional(Type.String()),
-  observedValue: Type.Optional(Type.Unknown()),
-  observedUnit: Type.Optional(Type.String()),
-  status: Type.Optional(Type.Enum(Status.Text)),
-  affectedEndpoints: Type.Optional(Type.Array(Type.String())),
-  time: Type.Optional(Type.Number()),
-  output: Type.Optional(Type.String()),
-  links: Type.Optional(Type.Record(Type.String(), Type.String({ format: 'uri' })))
-}, { $id: 'CheckObject', additionalProperties: true })
-
-export type Component = Static<typeof TComponent>
-
-export const TComponents = Type.Array(TComponent)
-
-export type Components = Static<typeof TComponents>
-
-export const TChecksObject = Type.Record(
-  Type.String(),
-  TComponents,
-  { $id: 'ChecksObject' }
-)
-
-export type ChecksObject = Static<typeof TChecksObject>
-
-export const TLinksObject = Type.Record(
-  Type.String(),
-  Type.String({ format: 'uri' }),
-  { $id: 'LinksObject' }
-)
-
-export type LinksObject = Static<typeof TLinksObject>
-
-export const THealthResponse = Type.Object({
-  status: Type.Enum(Status.Text),
-  version: Type.Optional(Type.String()),
-  releaseId: Type.Optional(Type.String()),
-  notes: Type.Optional(Type.Array(Type.String())),
-  output: Type.Optional(Type.String()),
-  checks: Type.Optional(TChecksObject),
-  links: Type.Optional(TLinksObject),
-  serviceId: Type.Optional(Type.String()),
-  description: Type.Optional(Type.String())
-})
-
-export type HealthResponse = Static<typeof THealthResponse>
+import { HealthResponse, ChecksObject } from './schema'
 
 export interface HealthCheckOptions {
   info?: Omit<HealthResponse, 'status' | 'checks'>
@@ -60,12 +11,18 @@ export class HealthCheck<T extends unknown[] = unknown[]> {
   checks: Record<string, Check<T>> = {}
   info: Omit<HealthResponse, 'status' | 'checks'>
 
-  constructor (checks: Array<CheckOptions | Check<T>> = [], opts: HealthCheckOptions = {}) {
-    for (const options of checks) {
-      const check = options instanceof Check ? options : Check.from<T>(options)
-      this.add(check)
+  constructor (options?: HealthCheckOptions)
+  constructor (checks?: Array<CheckOptions | Check<T>>, options?: HealthCheckOptions)
+  constructor (checks?: Array<CheckOptions | Check<T>> | HealthCheckOptions, config?: HealthCheckOptions) {
+    if (Array.isArray(checks)) {
+      for (const options of checks) {
+        const check = options instanceof Check ? options : Check.from<T>(options)
+        this.add(check)
+      }
+      this.info = config?.info ?? {}
+    } else {
+      this.info = checks?.info ?? {}
     }
-    this.info = opts.info ?? {}
   }
 
   get length (): number {

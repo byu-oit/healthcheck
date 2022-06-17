@@ -1,10 +1,6 @@
 import fetch, { Response } from 'node-fetch'
-import {
-  Check,
-  fetchExecutorFactory,
-  noopExecutorFactory,
-  Text
-} from '../src'
+import { Check, Status } from '../src'
+import { fetchExecutorFactory, noopExecutorFactory } from '../src/executors'
 
 // Mocking node fetch: https://stackoverflow.com/a/68379449/7542561
 jest.mock('node-fetch', () => jest.fn())
@@ -21,6 +17,6 @@ test('fetch executor returns a component response', () => {
 })
 
 test('noop executor returns a component response', () => {
-  const check = new Check('noop', 'executor', noopExecutorFactory(Text.PASS))
+  const check = new Check('noop', 'executor', noopExecutorFactory(Status.Text.PASS))
   expect(check.run()).resolves.toBeDefined()
 })
