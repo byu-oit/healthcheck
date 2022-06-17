@@ -1,0 +1,20 @@
+version: 2
+
+updates:
+  # Library
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    target-branch: "main"
+    reviewers:
+      - "byu-oit/specops-developer"
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/" # For GitHub Actions, set the directory to / to check for workflow files in .github/workflows. (GitHub Docs)
+    schedule:
+      interval: "monthly"
+    target-branch: "main"
+    reviewers:
+      - "byu-oit/specops-developer"

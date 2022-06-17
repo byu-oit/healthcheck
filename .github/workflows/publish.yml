@@ -1,0 +1,39 @@
+name: Publish
+
+on:
+  release:
+    type: [released, prereleased]
+
+concurrency: ${{ github.ref }}
+
+env:
+  node_version: 16
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        registry:
+          - token: NPM_TOKEN
+            url: 'https://registry.npmjs.org'
+          - token: GITHUB_TOKEN
+            url: 'https://npm.pkg.github.com'
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.node_version }}
+          registry-url: ${{ matrix.registry.url }}
+          scope: '@byu-oit'
+
+      - run: npm install
+
+      - run: npm run lint
+
+      - run: npm run test:coverage
+
+      - run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets[matrix.registry.token] }}
