@@ -28,5 +28,5 @@ jobs:
       - run: npm run test:coverage
       - uses: JS-DevTools/npm-publish@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          registry: https://npm.pkg.github.com
+          token: ${{ secrets[matrix.registry.token] }}
+          registry: ${{ matrix.registry.url }}
