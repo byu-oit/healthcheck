@@ -30,3 +30,4 @@ jobs:
         with:
           token: ${{ secrets[matrix.registry.token] }}
           registry: ${{ matrix.registry.url }}
+          access: public
