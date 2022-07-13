@@ -30,5 +30,5 @@ const plugin: FastifyPluginCallback<FastifyRfcHealthCheckOptions> = (fastify, op
 
 export const healthCheckFastify = fp(plugin, {
   fastify: '>=3',
-  name: '@byu-oit/healthcheck-fastify'
+  name: '@byu-oit/healthcheck'
 })
