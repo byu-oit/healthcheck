@@ -1,8 +1,8 @@
 import { Check, Status } from '../src'
-import { noopExecutorFactory } from '../src/executors'
+import { noopExecutorFactory } from '../src/executors/noop'
 
-function sleep (ms: number): Promise<void> {
-  return new Promise((resolve) => {
+async function sleep (ms: number): Promise<void> {
+  return await new Promise((resolve) => {
     setTimeout(resolve, ms)
   })
 }
@@ -12,9 +12,9 @@ let warn: Check
 let fail: Check
 
 beforeEach(() => {
-  success = new Check('success', 'check', noopExecutorFactory(Status.Text.PASS), { minCache: 10})
-  warn = new Check('warn', 'check', noopExecutorFactory(Status.Text.WARN), { minCache: 10})
-  fail = new Check('fail', 'check', noopExecutorFactory(Status.Text.FAIL), { minCache: 10})
+  success = new Check('success', 'check', noopExecutorFactory(Status.Text.PASS), { minCache: 10 })
+  warn = new Check('warn', 'check', noopExecutorFactory(Status.Text.WARN), { minCache: 10 })
+  fail = new Check('fail', 'check', noopExecutorFactory(Status.Text.FAIL), { minCache: 10 })
 })
 
 test('check can cache results', async () => {

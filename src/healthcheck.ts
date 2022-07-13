@@ -1,5 +1,5 @@
 import { Check, CheckOptions } from './check'
-import { Executor } from './executors'
+import { Executor } from './executors/executor'
 import * as Status from './status'
 import { HealthResponse, ChecksObject } from './schema'
 
@@ -40,12 +40,11 @@ export class HealthCheck<T extends unknown[] = unknown[]> {
   add (name: string, metric: string, executor: Executor<T>): this
   add (name: string | Check<T>, metric?: string, executor?: Executor<T>): this {
     let check: Check<T>
-    if(name instanceof Check) {
+    if (name instanceof Check) {
       check = name
     } else {
-      if (metric == null || executor == null) {
-        throw TypeError(`Cannot add an incomplete health check: name[${name}], metric[${metric}], executor[${executor}].`)
-      }
+      if (metric == null) throw TypeError(`Missing metric in health check ${name}`)
+      if (executor == null) throw TypeError(`Missing executor in health check ${name}`)
       check = new Check(name, metric, executor)
     }
     this.checks[check.key] = check
@@ -55,14 +54,14 @@ export class HealthCheck<T extends unknown[] = unknown[]> {
   exists (check: Check<T>): boolean
   exists (name: string, metric: string): boolean
   exists (name: Check<T> | string, metric?: string): boolean {
-    const key = name instanceof Check ? name.key : `${name}:${metric}`
+    const key = name instanceof Check ? name.key : name + (metric != null ? `:${metric}` : '')
     return Object.hasOwnProperty.call(this.checks, key)
   }
 
   delete (check: Check<T>): this
   delete (name: string, metric: string): this
   delete (name: Check<T> | string, metric?: string): this {
-    const key = name instanceof Check ? name.key : `${name}:${metric}`
+    const key = name instanceof Check ? name.key : name + (metric != null ? `:${metric}` : '')
     const { [key]: removed, ...filtered } = this.checks
     this.checks = filtered
     return this

@@ -1,13 +1,10 @@
 name: Publish
 
 on:
-  release:
-    type: [released, prereleased]
+  push:
+    branches: [main]
 
-concurrency: ${{ github.ref }}
-
-env:
-  node_version: 16
+concurrency: publish-${{ github.ref }}
 
 jobs:
   lint:
@@ -21,19 +18,15 @@ jobs:
             url: 'https://npm.pkg.github.com'
     steps:
       - uses: actions/checkout@v3
-
       - uses: actions/setup-node@v3
         with:
-          node-version: ${{ env.node_version }}
+          node-version: 16
           registry-url: ${{ matrix.registry.url }}
           scope: '@byu-oit'
-
       - run: npm install
-
       - run: npm run lint
-
       - run: npm run test:coverage
-
-      - run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets[matrix.registry.token] }}
+      - uses: JS-DevTools/npm-publish@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          registry: https://npm.pkg.github.com

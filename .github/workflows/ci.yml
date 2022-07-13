@@ -15,13 +15,9 @@ jobs:
         node_version: [ 14, 16, 18 ]
     steps:
       - uses: actions/checkout@v3
-
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node_version }}
-
       - run: npm install
-
       - run: npm run lint
-
       - run: npm run test:coverage

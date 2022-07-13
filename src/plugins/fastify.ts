@@ -1,6 +1,6 @@
 import { FastifyPluginCallback, FastifyReply, FastifyRequest, HTTPMethods } from 'fastify'
 import fp from 'fastify-plugin'
-import { HealthCheck } from '../..'
+import { HealthCheck } from '../healthcheck'
 
 export interface FastifyRfcHealthCheckOptions {
   path?: string

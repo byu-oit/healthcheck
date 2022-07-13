@@ -1,5 +1,5 @@
 import { HealthCheck, Status } from '../src'
-import { noopExecutorFactory } from '../src/executors'
+import { noopExecutorFactory } from '../src/executors/noop'
 
 let healthCheck: HealthCheck
 
