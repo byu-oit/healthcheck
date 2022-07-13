@@ -9,7 +9,7 @@ export interface FastifyRfcHealthCheckOptions {
   healthCheck: HealthCheck<[FastifyRequest?]>
 }
 
-const plugin: FastifyPluginCallback<FastifyRfcHealthCheckOptions> = (fastify, options) => {
+const plugin: FastifyPluginCallback<FastifyRfcHealthCheckOptions> = (fastify, options, done) => {
   const url = options?.path ?? '/health'
   const method = options?.method ?? 'GET'
   const cacheControl = Object.entries(options?.cacheControl ?? { 'max-age': '3600' })
@@ -26,6 +26,7 @@ const plugin: FastifyPluginCallback<FastifyRfcHealthCheckOptions> = (fastify, op
   }
 
   fastify.route({ method, url, handler })
+  done()
 }
 
 export const healthCheckFastify = fp(plugin, {
