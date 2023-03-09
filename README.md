@@ -44,9 +44,7 @@ demonstration purposes, I've included all the pieces in a comprehensive example 
 
 ```typescript
 // server.ts
-import {HealthCheck, Status} from '@byu-oit/healthcheck'
-import {healthCheckFastify} from '@byu-oit/healthcheck/dist/plugins/fastify'
-import {noopExecutorFactory} from '@byu-oit/healthcheck/dist/executors/noop'
+import {HealthCheck, Status, healthCheckFastify, noopExecutorFactory} from '@byu-oit/healthcheck'
 import {FastifyRequest} from 'fastify'
 
 const healthCheck = new HealthCheck<[FastifyRequest?]>({info: {version: '1', releaseId: '1.2.2'}})
