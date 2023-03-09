@@ -1,7 +1,7 @@
 import { Validator } from './validator'
 import * as Status from './status'
 import { Static, Type } from '@sinclair/typebox'
-import { Executor } from './executors/executor'
+import { Executor } from './executors'
 import { Components, TComponents } from './schema'
 
 export const TCheckOptions = Type.Object({

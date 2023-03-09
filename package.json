@@ -3,7 +3,7 @@
   "version": "0.1.2",
   "description": "Standardized web server health checks",
   "main": "dist/index.js",
-  "types": "types/index.d.ts",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "rimraf dist types && tsc",
     "lint": "eslint .",
@@ -13,8 +13,7 @@
     "prepublishOnly": "npm run build"
   },
   "files": [
-    "dist",
-    "types"
+    "dist"
   ],
   "repository": {
     "type": "git",

@@ -1,5 +1,5 @@
 import { Check, CheckOptions } from './check'
-import { Executor } from './executors/executor'
+import { Executor } from './executors'
 import * as Status from './status'
 import { HealthResponse, ChecksObject } from './schema'
 

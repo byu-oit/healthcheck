@@ -2,8 +2,7 @@
   "extends": "@tsconfig/node16/tsconfig.json",
   "compilerOptions": {
     "outDir": "dist",
-    "declaration": true,
-    "declarationDir": "types"
+    "declaration": true
   },
   "include": [
     "src"
