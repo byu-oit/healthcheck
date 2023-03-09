@@ -44,27 +44,20 @@ demonstration purposes, I've included all the pieces in a comprehensive example 
 
 ```typescript
 // server.ts
-import { HealthCheck, Status } from '@byu-oit/healthcheck'
-import { healthCheckFastify } from '@byu-oit/healthcheck/dist/plugins/fastify'
-import { FastifyRequest } from 'fastify'
-import { Client } from 'pg'
+import {HealthCheck, Status} from '@byu-oit/healthcheck'
+import {healthCheckFastify} from '@byu-oit/healthcheck/dist/plugins/fastify'
+import {noopExecutorFactory} from '@byu-oit/healthcheck/dist/executors/noop'
+import {FastifyRequest} from 'fastify'
 
-const healthCheck = new HealthCheck({ version: '1', releaseId: '1.2.2' })
-  .add('postgresql', 'connections', async (req: FastifyRequest) => {
-    try {
-      // Gets connection information from environment
-      await new Client().query('SELECT NOW()')
-      return { status: Status.Text.PASS }
-    } catch (e) {
-      return { status: Status.Text.FAIL }
-    }
-  })
+const healthCheck = new HealthCheck<[FastifyRequest?]>({info: {version: '1', releaseId: '1.2.2'}})
+    .add('noop', 'alive', noopExecutorFactory(Status.Text.PASS))
 
-void api.register(healthCheckFastify, {
-  logLevel: 'error', // Disable health check logging except for errors
-  path: '/health',
-  // method: 'GET', // Default method is GET
-  healthCheck
+export const app = fastify()
+
+app.register(healthCheckFastify, {
+    logLevel: 'error',
+    path: '/health/details',
+    healthCheck
 })
 ```
 
@@ -72,17 +65,24 @@ Rather than calling the `add` function, the above example could be changed to pa
 HealthCheck constructor like so:
 
 ```typescript
-import { HealthCheck } from './healthcheck'
+import {FastifyRequest, Status} from 'fastify'
+import {HealthCheck} from '@byu-oit/healthcheck'
 
-const healthCheck = new HealthCheck([
-  {
-    name: 'postgreseql',
-    metric: 'connections',
-    async executor (req: FastifyRequest) {
-      return { status: Status.Text.PASS }
+const healthCheck: HealthCheck<[FastifyRequest?]> = new HealthCheck([
+    {
+        name: 'noop',
+        metric: 'alive',
+        executor: noopExecutorFactory(Status.Text.PASS)
     }
-  }
-], { version: '1', releaseId: '1.2.2' })
+], {info: {version: '1', releaseId: '1.2.2'}})
+
+export const app = fastify()
+
+app.register(healthCheckFastify, {
+    logLevel: 'error',
+    path: '/health/details',
+    healthCheck
+})
 ```
 
 The RFC Draft allows metadata on the top level of the health check response. More information about the top-level
@@ -90,18 +90,18 @@ metadata can be found on the RFC Draft website. Here is an example of passing in
 
 ```typescript
 const healthCheck = new HealthCheck({
-  info: {
-    version: "1",
-    releaseId: "1.2.2",
-    notes: [""],
-    output: "",
-    serviceId: "f03e522f-1f44-4062-9b55-9587f91c9c41",
-    description: "health of authz service",
-    links: {
-      about: "http://api.example.com/about/authz",
-      'http://api.x.io/rel/thresholds': "http://api.x.io/rel/thresholds"
+    info: {
+        version: "1",
+        releaseId: "1.2.2",
+        notes: [""],
+        output: "",
+        serviceId: "f03e522f-1f44-4062-9b55-9587f91c9c41",
+        description: "health of authz service",
+        links: {
+            about: "http://api.example.com/about/authz",
+            'http://api.x.io/rel/thresholds': "http://api.x.io/rel/thresholds"
+        }
     }
-  }
 })
 ```
 

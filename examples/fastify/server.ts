@@ -3,13 +3,8 @@ import {HealthCheck, Status} from '../../src'
 import {noopExecutorFactory} from '../../src/executors/noop'
 import {healthCheckFastify} from '../../src/plugins/fastify'
 
-const healthCheck: HealthCheck<[FastifyRequest?]> = new HealthCheck([
-    {
-        name: 'noop',
-        metric: 'alive',
-        executor: noopExecutorFactory(Status.Text.PASS)
-    }
-], {info: {version: '1', releaseId: '1.2.2'}})
+const healthCheck = new HealthCheck<[FastifyRequest?]>({info: {version: '1', releaseId: '1.2.2'}})
+    .add('noop', 'alive', noopExecutorFactory(Status.Text.PASS))
 
 export const app = fastify()
 
