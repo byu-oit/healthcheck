@@ -1,8 +1,7 @@
-import { Check, Status } from '../src'
-import { noopExecutorFactory } from '../src/executors/noop'
+import { Check, Status, noopExecutorFactory } from '../src'
 
 async function sleep (ms: number): Promise<void> {
-  return await new Promise((resolve) => {
+  await new Promise((resolve) => {
     setTimeout(resolve, ms)
   })
 }

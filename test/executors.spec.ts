@@ -1,7 +1,5 @@
-import fetch, { Response } from 'node-fetch'
-import { Check, Status } from '../src'
-import { fetchExecutorFactory } from '../src/executors/fetch'
-import { noopExecutorFactory } from '../src/executors/noop'
+import fetch, { type Response } from 'node-fetch'
+import { Check, Status, fetchExecutorFactory, noopExecutorFactory } from '../src'
 
 // Mocking node fetch: https://stackoverflow.com/a/68379449/7542561
 jest.mock('node-fetch', () => jest.fn())

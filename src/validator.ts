@@ -1,5 +1,5 @@
-import { TypeCompiler, TypeCheck, ValueError } from '@sinclair/typebox/compiler'
-import { Static, TSchema } from '@sinclair/typebox'
+import { TypeCompiler, type ValueError, type TypeCheck } from '@sinclair/typebox/compiler'
+import type { Static, TSchema } from '@sinclair/typebox'
 
 export class Validator<T extends TSchema> {
   protected readonly validator: TypeCheck<T>

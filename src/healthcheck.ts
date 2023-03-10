@@ -1,7 +1,7 @@
-import { Check, CheckOptions } from './check'
-import { Executor } from './executors'
+import { Check, type CheckOptions } from './check'
+import type { Executor } from './executors'
 import * as Status from './status'
-import { HealthResponse, ChecksObject } from './schema'
+import type { HealthResponse, ChecksObject } from './schema'
 
 export interface HealthCheckOptions {
   info?: Omit<HealthResponse, 'status' | 'checks'>

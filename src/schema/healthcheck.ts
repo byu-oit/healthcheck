@@ -1,4 +1,4 @@
-import { Static, Type } from '@sinclair/typebox'
+import { type Static, Type } from '@sinclair/typebox'
 import * as Status from '../status'
 import { TChecksObject } from './check'
 import { TLinksObject } from './links'

@@ -1,7 +1,7 @@
-import fetch, { RequestInfo, RequestInit } from 'node-fetch'
-import { Check } from '../check'
+import fetch, { type RequestInfo, type RequestInit } from 'node-fetch'
+import type { Check } from '../check'
 import * as Status from '../status'
-import { Executor } from './executor'
+import type { Executor } from './executor'
 
 export function fetchExecutorFactory (...requests: Array<RequestInfo | [RequestInfo, RequestInit]>): Executor<[]> {
   const endpoints: Array<[RequestInfo, RequestInit?]> = requests.map((req) => Array.isArray(req) ? req : [req])

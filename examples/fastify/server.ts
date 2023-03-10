@@ -1,4 +1,4 @@
-import fastify, { FastifyRequest } from 'fastify'
+import fastify, { type FastifyRequest } from 'fastify'
 import { HealthCheck, Status, noopExecutorFactory, healthCheckFastify } from '../../src'
 
 const healthCheck = new HealthCheck<[FastifyRequest?]>({ info: { version: '1', releaseId: '1.2.2' } })
