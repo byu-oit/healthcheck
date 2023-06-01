@@ -52,7 +52,7 @@
     "typescript": "^4.7.4"
   },
   "dependencies": {
-    "@sinclair/typebox": "^0.25.24",
+    "@sinclair/typebox": "^0.28.14",
     "fastify": "^4.2.1",
     "fastify-plugin": "^4.0.0"
   },
