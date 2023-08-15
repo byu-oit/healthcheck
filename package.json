@@ -53,8 +53,7 @@
   },
   "dependencies": {
     "@sinclair/typebox": "^0.25.24",
-    "fastify": "^4.2.1",
-    "fastify-plugin": "^4.0.0"
+    "fastify": "^4.2.1"
   },
   "optionalDependencies": {
     "node-fetch": "2"
