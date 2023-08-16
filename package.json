@@ -1,6 +1,6 @@
 {
   "name": "@byu-oit/healthcheck",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Standardized web server health checks",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
