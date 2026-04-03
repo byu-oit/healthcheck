@@ -31,16 +31,32 @@ component response object as defined per the RFC Draft.
 
 ## Installation
 
+This package now targets `Node.js 20+`.
+
 ```shell
 npm install @byu-oit/healthcheck
 ```
+
+If you use the Fastify plugin, install a Fastify 5 release:
+
+```shell
+npm install @byu-oit/healthcheck fastify@^5
+```
+
+## Breaking Changes
+
+- `@byu-oit/healthcheck` now requires `Node.js 20+`.
+- The Fastify integration is now intended for `fastify@^5`.
+- The documented executor deep-import paths remain unchanged:
+  - `@byu-oit/healthcheck/dist/executors/noop`
+  - `@byu-oit/healthcheck/dist/executors/fetch`
 
 ## Usage
 
 ### Fastify
 
-Health check executors and their dependencies can be imported from external files for better code organization. For
-demonstration purposes, I've included all the pieces in a comprehensive example below:
+Health check executors and their dependencies can be imported from external files for better code organization. The
+example below targets Fastify 5:
 
 ```typescript
 // server.ts
@@ -107,7 +123,7 @@ const healthCheck = new HealthCheck({
 
 Plugins or middleware are implementations of the RFC Draft for specific web server frameworks such as fastify. Plugins
 must be imported directly to not bloat the required dependencies to run this package. Additionally, all plugin
-dependencies must be installed.
+dependencies must be installed, and the Fastify plugin assumes a Fastify 5 application.
 
 ### Executor Factories
 
