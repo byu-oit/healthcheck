@@ -8,7 +8,6 @@ concurrency: publish-${{ github.ref }}
 
 permissions:
   contents: read
-  id-token: write
   packages: write
 
 jobs:
@@ -43,7 +42,7 @@ jobs:
           package-manager-cache: false
       - id: npmjs-version
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           PACKAGE_NAME: ${{ steps.package.outputs.name }}
           PACKAGE_VERSION: ${{ steps.package.outputs.version }}
         run: |
@@ -57,7 +56,7 @@ jobs:
       - if: steps.npmjs-version.outputs.publish == 'true'
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm publish --access public --provenance
+        run: npm publish --access public
 
       - id: gpr
         uses: actions/setup-node@v6
